@@ -68,8 +68,12 @@
             </div>
             <small>{{ post.created }}</small>
             <div class="post-comment-create">
-                <input type="text" placeholder="댓글 달기...">
-                <button type="submit">게시</button>
+                <form method="POST" action="/posts/comment_add/">
+                    {% csrf_token %}
+                    <input type="hidden" name="post" value="{{ post.id }}">
+                    {{ comment_form.content }}
+                    <button type="submit">게시</button>
+                </form>
             </div>
         </article>
     {% endfor %}
