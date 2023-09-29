@@ -4,11 +4,12 @@
     <h1>
         <a href="/posts/feeds/">Pystagram</a>
     </h1>
+    <a href="/posts/post_add/">Add post</a>
     <a href="/users/logout/">Logout</a>
 </nav>
 <div id="feeds" class="post-container">
     {% for post in posts %}
-        <article class="post">
+        <article id="post-{{ post.id }}" class="post">
             <header class="post-header">
                 {% if post.user.profile_image %}
                     <img src="{{ post.user.profile_image.url }}">
@@ -54,7 +55,7 @@
             </div>
             <div class="post-buttons">
                 <button>Likes(0)</button>
-                <span>Comments(0)</span>
+                <span>Comments({{ post.comment_set.count }})</span>
             </div>
             <div class="post-comments">
                 <ul>
@@ -62,6 +63,12 @@
                         <li>
                             <span>{{ comment.user.username }}</span>
                             <span>{{ comment.content }}</span>
+                            {% if user == comment.user %}
+                                <form method="POST" action="/posts/comment_delete/{{ comment.id }}/">
+                                    {% csrf_token %}
+                                    <button type="submit">삭제</button>
+                                </form>
+                            {% endif %}
                         </li>
                     {% endfor %}
                 </ul>
@@ -79,9 +86,9 @@
     {% endfor %}
 </div>
 <script>
-    document.addEventListener( 'DOMContentLoaded', function() {
-      var splide = new Splide( '.splide' );
-      splide.mount();
-    } );
+    const elms = document.getElementsByClassName('splide')
+    for (let i = 0; i < elms.length; i++) {
+        new Splide(elms[i]).mount();
+    }
 </script>
 {% endblock %}
