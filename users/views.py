@@ -4,9 +4,10 @@ from users.forms import LoginForm, SignupForm
 from users.models import User
 
 # Create your views here.
+# 로그인 로직
 def login_view(request):
     if request.user.is_authenticated:
-        return redirect("/posts/feeds/")
+        return redirect("posts:feeds")
     
     if request.method == "POST":
         form = LoginForm(data=request.POST)
@@ -18,7 +19,7 @@ def login_view(request):
             
             if user:
                 login(request, user)
-                return redirect("/posts/feeds/")
+                return redirect("posts:feeds")
             else:
                 form.add_error(None, "입력한 자격증명에 해당하는 사용자가 없습니다")
         
@@ -28,19 +29,19 @@ def login_view(request):
         form = LoginForm()
         context = {"form": form}
         return render(request, "users/login.html", context)
-    
+# 로그아웃 로직
 def logout_view(request):
     logout(request)
     
-    return redirect("/users/login/")
-
+    return redirect("users:login")
+# 회원가입 로직
 def signup(request):
     if request.method == "POST":
         form = SignupForm(data=request.POST, files=request.FILES)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect("/posts/feeds/")
+            return redirect("posts:feeds")
         
     else:
         form = SignupForm()
