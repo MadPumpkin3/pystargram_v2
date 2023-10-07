@@ -56,6 +56,14 @@ def post_add(request):
                     photo = image_file,
                 )
             
+            # form으로 받은 해시태그를 분리 및 저장하는 로직
+            tag_string = request.POST.get("tags")
+            if tag_string:
+                tag_names = [tag_name.strip() for tag_name in tag_string.split(",")]
+                for tag_name in tag_names:
+                    tag, _ = HashTag.objects.get_or_create(name=tag_name)
+                    post.tags.add(tag)
+            
             url = reverse("posts:feeds") + f"#post-{post.id}"
             return HttpResponseRedirect(url)
     
@@ -78,3 +86,12 @@ def tags(request, tag_name):
         "posts": posts,
     }
     return render(request, 'posts/tags.html', context)
+
+def post_detail(request, post_id):
+    post = Post.objects.get(id=post_id)
+    comment_form = CommentForm()
+    context = {
+        "post": post,
+        "comment_form": comment_form,
+               }
+    return render(request, "posts/post_detail.html", context)
