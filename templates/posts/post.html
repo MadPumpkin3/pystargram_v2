@@ -75,7 +75,7 @@
     <!-- 댓글 생성 부분 -->
     <small>{{ post.created }}</small>
     <div class="post-comment-create">
-        <form method="POST" action="{% url 'posts:comment_add' %}">
+        <form method="POST" action="{% url 'posts:comment_add' %}?next={{ action_redirect_url }}">
             {% csrf_token %}
             <input type="hidden" name="post" value="{{ post.id }}">
             {{ comment_form.content }}

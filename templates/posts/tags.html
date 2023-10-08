@@ -1,24 +1,23 @@
-{% extends 'base.html' %}
+{% extends 'base_nav.html' %}
 
 {% block content %}
-{% include 'nav.html' %}
-<div id="tags">
-    <header class="tags-header">
-        <h2>#{{ tag_name }}</h2>
-        <div>게시물 {{ posts.count }}</div>
-    </header>
-    <div class="post-grid-container">
-        {% for post in posts %}
-            {% if post.postimage_set.first and post.postimage_set.first.photo %}
-                <div class="post-grid">
-                    <a href="{% url 'posts:post_detail' post_id=post.id %}">
-                        <img src="{{ post.postimage_set.first.photo.url }}" alt="">
-                    </a>
-                </div>
-            {% endif %}
-        {% empty %}
-            <p>검색된 게시물이 없습니다</p>
-        {% endfor %}
+    <div id="tags">
+        <header class="tags-header">
+            <h2>#{{ tag_name }}</h2>
+            <div>게시물 {{ posts.count }}</div>
+        </header>
+        <div class="post-grid-container">
+            {% for post in posts %}
+                {% if post.postimage_set.first and post.postimage_set.first.photo %}
+                    <div class="post-grid">
+                        <a href="{% url 'posts:post_detail' post_id=post.id %}">
+                            <img src="{{ post.postimage_set.first.photo.url }}" alt="">
+                        </a>
+                    </div>
+                {% endif %}
+            {% empty %}
+                <p>검색된 게시물이 없습니다</p>
+            {% endfor %}
+        </div>
     </div>
-</div>
 {% endblock %}

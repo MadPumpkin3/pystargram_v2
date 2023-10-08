@@ -26,8 +26,15 @@ def comment_add(request):
         comment = form.save(commit=False)
         comment.user = request.user
         comment.save()
-        url = reverse("posts:feeds") + f"#post-{comment.post.id}"
-        return HttpResponseRedirect(url)
+        
+        url_next = request.GET.get("next")
+        
+        # if request.GET.get("next"):
+        #     url_next = request.GET.get("next")
+        # else:
+        #     url_next = reverse("posts:feeds") + f"#post-{comment.post.id}"
+            
+        return HttpResponseRedirect(url_next)
     
 # 댓글 삭제 로직
 @require_POST
