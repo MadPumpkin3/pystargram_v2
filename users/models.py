@@ -19,7 +19,7 @@ class User(AbstractUser):
         verbose_name="팔로우 중인 사용자들",
         related_name="followers",
         symmetrical=False,
-        through="users.Relationship"
+        through="users.Relationship",
     )
     
     def __str__(self):
