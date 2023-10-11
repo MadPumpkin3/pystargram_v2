@@ -10,8 +10,16 @@
         <!-- 글의 작성자가 로그인한 사용자라면 팔로우 버튼을 표시하지 않는다 -->
         {% if user != post.user %}
             <form action="{% url 'users:follow' user_id=post.user.id %}?next={{ action_redirect_url }}" method="POST">
-                
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">
+                    {% if post.user in user.following.all %}
+                        Unfollow
+                    {% else %}
+                        Follow
+                {% endif %}
+                </button>
             </form>
+        {% endif %}
     </header>
     <div class="carousel_main">
         <!-- 캐러셀 이미지 삽입 -->
